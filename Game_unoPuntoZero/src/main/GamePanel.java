@@ -4,8 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
+
 import javax.swing.JPanel;
 import entities.Player;
+import tile.TileManager;
+
 
 public class GamePanel extends JPanel implements Runnable{
 	//SCREEN SETTINGS
@@ -22,6 +26,9 @@ public class GamePanel extends JPanel implements Runnable{
 	//FPS
 	int FPS = 60;
 	
+	
+
+	TileManager tileM = new TileManager(this);
 	
 	KeyHandler keyH = new KeyHandler();
 	Thread gameThread;//il thread è uno switch che possiamo accendere e spegnere, il programma gira finché non va off; 
@@ -91,6 +98,9 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(g);
 		
 		Graphics2D g2 = (Graphics2D)g;
+		
+
+		tileM.draw(g2);
 		
 		player.draw(g2);
 		

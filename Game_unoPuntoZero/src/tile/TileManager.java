@@ -2,9 +2,11 @@ package tile;
 
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 
 import javax.imageio.ImageIO;
 
@@ -25,7 +27,7 @@ public class TileManager {
 		mapTileNum = new int[gp.maxScreenCol][gp.maxScreenRow];
 		
 		getTileImage();
-		loadMap();
+		loadMap("/maps/map02.txt");
 	}
 	
 	public void getTileImage() {
@@ -36,21 +38,21 @@ public class TileManager {
 			tile[0].image = ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png"));
 			
 			tile[1] = new Tile();
-			tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/dirt.png"));
+			tile[1].image = ImageIO.read(getClass().getResourceAsStream("/tiles/wooden.png"));
 			
 			tile[2] = new Tile();
-			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/white.png"));
+			tile[2].image = ImageIO.read(getClass().getResourceAsStream("/tiles/rock_in_water_06.png"));
 			
 		}catch(IOException e){
 			e.printStackTrace();
 		}
 	}
 	
-	public void loadMap() {
+	public void loadMap(String filePath) {
 		
 		try {
 			
-			InputStream is = getClass().getResourceAsStream("/maps/map02.txt");
+			InputStream is = getClass().getResourceAsStream(filePath);
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 			
 			int col = 0;
@@ -76,10 +78,11 @@ public class TileManager {
 			}
 			br.close();
 		} catch (Exception e) {
-			
+			System.out.println(e + "guarda qua");
 		}
 		
 	}
+	
 	
 	public void draw(Graphics2D g2) {
 		
@@ -91,7 +94,8 @@ public class TileManager {
 		while(col < gp.maxScreenCol && row < gp.maxScreenRow) {
 			
 			int tileNum = mapTileNum[col][row];
-			
+			System.out.println(tileNum);
+
 			g2.drawImage(tile[tileNum].image, x, y, gp.tileSize, gp.tileSize, null);
 			col++;
 			x += gp.tileSize;
@@ -103,8 +107,5 @@ public class TileManager {
 				y += gp.tileSize;
 			}
 		}
-		
-		
-		
 	}
 }
