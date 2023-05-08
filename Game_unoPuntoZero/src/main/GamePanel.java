@@ -38,9 +38,6 @@ public class GamePanel extends JPanel implements Runnable{
 	TileManager tileM = new TileManager(this);
 	
 	
-
-	TileManager tileM = new TileManager(this);
-	
 	KeyHandler keyH = new KeyHandler();
 	Thread gameThread;//il thread è uno switch che possiamo accendere e spegnere, il programma gira finché non va off; 
 	//dalla libreria java Runnable
