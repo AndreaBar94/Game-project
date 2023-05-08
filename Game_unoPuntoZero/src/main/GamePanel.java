@@ -4,30 +4,46 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
 import javax.swing.JPanel;
+import entities.Player;
+import tile.TileManager;
 
 public class GamePanel extends JPanel implements Runnable{
 	//SCREEN SETTINGS
-	final int originalTileSize = 16; // 16x16 tile, dimensione base dei pg e delle tessere della mappa
+	public final int originalTileSize = 16; // 16x16 tile, dimensione base dei pg e delle tessere della mappa
 	final int scale = 3;
-	final int tileSize = originalTileSize * scale; // le tile diventano 48x48
-	final int maxScreenCol = 16;
-	final int maxScreenRow = 12;
-	final int screenWidth = tileSize * maxScreenCol; // 768 px
-	final int screenHeight = tileSize * maxScreenRow; // 576 px
+	
+	public final int tileSize = originalTileSize * scale; // le tile diventano 48x48
+	public final int maxScreenCol = 16;
+	public final int maxScreenRow = 12;
+	public final int screenWidth = tileSize * maxScreenCol; // 768 px
+	public final int screenHeight = tileSize * maxScreenRow; // 576 px
 	//otteniamo così un ratio 4:3
+	
+	
+	//WORLD SETTING AND PARAMETERS
+	public final int maxWorldCol = 50;
+	public final int maxWorldRow = 50;
+	public final int worldWidth = tileSize * maxWorldCol;
+	public final int worldHeight = tileSize * maxWorldRow;
+	
+	
+	
 	
 	//FPS
 	int FPS = 60;
+	
+
+	TileManager tileM = new TileManager(this);
 	
 	
 	KeyHandler keyH = new KeyHandler();
 	Thread gameThread;//il thread è uno switch che possiamo accendere e spegnere, il programma gira finché non va off; 
 	//dalla libreria java Runnable
 	
-	int playerX = 100;
-	int playerY = 100;
-	int playerSpeed = 4;
+	public Player player = new Player(this, keyH);
+	
 	
 	
 	public GamePanel() {
@@ -70,7 +86,7 @@ public class GamePanel extends JPanel implements Runnable{
 				delta--;
 				drawCount++;
 			}
-			if(timer >= 10000000) {
+			if(timer >= 1000000000) {
 				System.out.println("FPS: " + drawCount);
 				drawCount = 0;
 				timer = 0;
@@ -82,18 +98,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public void update() {
 		
-		if(keyH.upPressed == true) {
-			playerY -= playerSpeed;
-		}
-		else if(keyH.downPressed == true) {
-			playerY += playerSpeed;
-		}
-		else if(keyH.leftPressed == true) {
-			playerX -= playerSpeed;
-		}
-		else if(keyH.rightPressed == true){
-			playerX += playerSpeed;
-		}
+		player.update();
 		
 	}
 	public void paintComponent(Graphics g) {
@@ -102,9 +107,9 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		Graphics2D g2 = (Graphics2D)g;
 		
-		g2.setColor(Color.white);
+		tileM.draw(g2);
 		
-		g2.fillRect(playerX, playerY, tileSize, tileSize);
+		player.draw(g2);
 		
 		g2.dispose();
 	}
