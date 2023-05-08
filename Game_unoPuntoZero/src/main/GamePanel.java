@@ -5,15 +5,13 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-
 import javax.swing.JPanel;
 import entities.Player;
 import tile.TileManager;
 
-
 public class GamePanel extends JPanel implements Runnable{
 	//SCREEN SETTINGS
-	final int originalTileSize = 16; // 16x16 tile, dimensione base dei pg e delle tessere della mappa
+	public final int originalTileSize = 16; // 16x16 tile, dimensione base dei pg e delle tessere della mappa
 	final int scale = 3;
 	
 	public final int tileSize = originalTileSize * scale; // le tile diventano 48x48
@@ -23,8 +21,21 @@ public class GamePanel extends JPanel implements Runnable{
 	public final int screenHeight = tileSize * maxScreenRow; // 576 px
 	//otteniamo così un ratio 4:3
 	
+	
+	//WORLD SETTING AND PARAMETERS
+	public final int maxWorldCol = 50;
+	public final int maxWorldRow = 50;
+	public final int worldWidth = tileSize * maxWorldCol;
+	public final int worldHeight = tileSize * maxWorldRow;
+	
+	
+	
+	
 	//FPS
 	int FPS = 60;
+	
+
+	TileManager tileM = new TileManager(this);
 	
 	
 
@@ -34,7 +45,7 @@ public class GamePanel extends JPanel implements Runnable{
 	Thread gameThread;//il thread è uno switch che possiamo accendere e spegnere, il programma gira finché non va off; 
 	//dalla libreria java Runnable
 	
-	Player player = new Player(this, keyH);
+	public Player player = new Player(this, keyH);
 	
 	
 	
@@ -99,7 +110,6 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		Graphics2D g2 = (Graphics2D)g;
 		
-
 		tileM.draw(g2);
 		
 		player.draw(g2);
